@@ -20,9 +20,6 @@ module Danger
 
     # @return [void]
     def report(inline_mode = true)
-      return fail(MAVEN_NOT_FOUND) unless maven_exists?
-      execute_reporting(inline_mode)
-
       unless skip_maven_task
         return fail(MAVEN_NOT_FOUND) unless maven_exists?
         exec_maven_task
