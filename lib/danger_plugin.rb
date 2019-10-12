@@ -1,1 +1,1 @@
-require 'findbugs/plugin'
+require 'spotbugs/plugin'
