@@ -109,7 +109,7 @@ module Danger
     # @return [Array[BugIssue]]
     def bug_issues
       @bug_issues ||= spotbugs_report.xpath("//BugInstance").map do |buginfo|
-        BugIssue.new(maven_task, buginfo)
+        BugIssue.new(buginfo)
       end
     end
 
