@@ -50,7 +50,7 @@ module Danger
         end
     end
 
-    # @return [String]
+    # @return [string]
     def maven_task
       @maven_task  ||= 'spotbugs:spotbugs'
     end
@@ -58,6 +58,11 @@ module Danger
     # @return [String]
     def report_file
       @report_file ||= 'target/spotbugsXml.xml'
+    end
+
+    # @return [Bool]
+    def skip_maven_task
+      @skio_maven_task ||= true
     end
 
     # @return [String]
