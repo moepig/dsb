@@ -9,7 +9,7 @@ class BugIssue
   end
 
   def rank
-    @rack ||= buginfo.attribute("rank").value.to_i
+    @rank ||= buginfo.attribute("rank").value.to_i
   end
 
   def type
