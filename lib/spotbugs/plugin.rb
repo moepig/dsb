@@ -117,7 +117,7 @@ module Danger
     def send_inline_comment
       warn('ready to send')
       bug_issues.each do |issue|
-        filename = "#{maven_project}#{issue.absolute_path}"
+        filename = "#{issue.absolute_path}"
         warn(filename)
         next unless target_files.include? filename
         warn('send!')
