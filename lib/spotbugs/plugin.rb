@@ -127,7 +127,6 @@ module Danger
     def send_inline_comment
       bug_issues.each do |issue|
         filename = "#{issue.absolute_path}"
-        warn(filename)
         next unless target_files.include? filename
         send(issue.type, issue.description, file: filename, line: issue.line)
       end
