@@ -114,11 +114,13 @@ module Danger
 
     # @return [Array[BugIssue]]
     def bug_issues
-      @bug_issues ||= spotbugs_report.xpath("//BugInstance").map do |buginfo|
+      issues = []
+      spotbugs_report.xpath("//BugInstance").each do |buginfo|
         source_directories.each do |dir|
-          BugIssue.new(buginfo, dir)
+          issues.push(BugIssue.new(buginfo, dir))
         end
       end
+      @bug_issues ||= issues
     end
 
     # @return [void]
