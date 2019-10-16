@@ -14,13 +14,15 @@ module Danger
     # @return [Bool]
     attr_writer :skip_maven_task
 
+    # @return [Array[String]]
+    attr_writer :source_directories
+
 
     MAVEN_NOT_FOUND = "Could not find `maven`"
     REPORT_FILE_NOT_FOUND = "Spotbugs report not found"
 
     # @return [void]
     def report(inline_mode = true)
-      warn('test0')
       unless skip_maven_task
         return fail(MAVEN_NOT_FOUND) unless maven_exists?
         exec_maven_task
@@ -29,7 +31,6 @@ module Danger
 
       if inline_mode
         send_inline_comment
-        warn('test1')
       else
           task = maven_task
           file = report_file
@@ -55,6 +56,11 @@ module Danger
     # @return [string]
     def maven_task
       @maven_task  ||= 'spotbugs:spotbugs'
+    end
+    
+    # @return [Array[string]]
+    def source_directories
+      @source_directories ||= ['src/main/java']
     end
 
     # @return [String]
@@ -86,7 +92,7 @@ module Danger
       end
       system "maven #{maven_task}"
       if maven_project != ''
-        "cd DANGER_TMP"
+        "cd $DANGER_TMP"
       end
     end
 
@@ -109,18 +115,18 @@ module Danger
     # @return [Array[BugIssue]]
     def bug_issues
       @bug_issues ||= spotbugs_report.xpath("//BugInstance").map do |buginfo|
-        BugIssue.new(buginfo)
+        source_directories.each do |dir|
+          BugIssue.new(buginfo, dir)
+        end
       end
     end
 
     # @return [void]
     def send_inline_comment
-      warn('ready to send')
       bug_issues.each do |issue|
         filename = "#{issue.absolute_path}"
         warn(filename)
         next unless target_files.include? filename
-        warn('send!')
         send(issue.type, issue.description, file: filename, line: issue.line)
       end
     end
