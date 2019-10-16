@@ -1,9 +1,11 @@
 class BugIssue
   RANK_ERROR_THRESHOLD = 4
   attr_accessor :buginfo
+  attr_accessor :source_directory
 
-  def initialize(buginfo)
+  def initialize(buginfo, source_directory)
     @buginfo = buginfo
+    @source_directory = source_directory
   end
 
   def rank
@@ -27,7 +29,7 @@ class BugIssue
   end
 
   def absolute_path
-    @absolute_path ||= Pathname.new("src/main/java").join(source_path).to_s
+    @absolute_path ||= Pathname.new(@source_directory).join(source_path).to_s
   end
 
 end
